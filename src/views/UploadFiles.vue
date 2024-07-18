@@ -2,6 +2,7 @@
 import InputFile from '../components/InputFile.vue';
 import { useFileStore } from '../stores/FileStore';
 import { ref } from 'vue';
+import Loader from '../components/Loader.vue';
 
 const movement = ref(false);
 const fileStore = useFileStore();
@@ -27,7 +28,11 @@ function onDragleave(e) {
       <div class="intro-top">
         <div class="intro-top__name">My projects</div>
       </div>
+      <div class="intro-loader" v-if="fileStore.loader">
+        <Loader />
+      </div>
       <div
+        v-else
         class="intro-base"
         :class="{ 'intro-base--movement': movement }"
         @drop="fileStore.onDrop($event)"
@@ -63,6 +68,13 @@ function onDragleave(e) {
     line-height: 156%;
     color: #101828;
   }
+}
+
+.intro-loader {
+  min-height: calc(100vh - 69px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .intro-base {

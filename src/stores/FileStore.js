@@ -39,9 +39,9 @@ export const useFileStore = defineStore('fileStore', () => {
       if (files.value.length > 0) {
         router.push('/');
       }
-      loader.value = false;
     }).catch((error) => {
-      console.log(error)
+      console.log(error);
+    }).finally(() => {
       loader.value = false;
     });
   };
@@ -89,12 +89,14 @@ export const useFileStore = defineStore('fileStore', () => {
             timeCreated: metadata.timeCreated,
             url: urlCurrnet
           }
-          files.value.shift();
+          if (files.value.length > 0) {
+            files.value.shift();
+          }
           files.value.push(object);
-          loader.value = false;
         })
         .catch((error) => {
           console.log(error);
+        }).finally(() => {
           loader.value = false;
         });
     })
