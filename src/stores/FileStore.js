@@ -25,15 +25,15 @@ export const useFileStore = defineStore('fileStore', () => {
     loader.value = true;
 
     await uploadBytes(storageRef, file).then((snapshot) => {
-      let urlCurrnet = '';
+      let urlCurrent = '';
       getDownloadURL(storageRef).then(url => {
-        urlCurrnet = url;
+        urlCurrent = url;
       });
       const object = {
         name: snapshot.metadata.name,
         size: snapshot.metadata.size,
         timeCreated: snapshot.metadata.timeCreated,
-        url: urlCurrnet
+        url: urlCurrent
       }
       files.value.push(object);
       if (files.value.length > 0) {
@@ -89,10 +89,9 @@ export const useFileStore = defineStore('fileStore', () => {
             timeCreated: metadata.timeCreated,
             url: urlCurrnet
           }
-          if (files.value.length > 0) {
-            files.value.shift();
+          if (!files.value.find(item => item.name === metadata.name)) {
+            files.value.push(object);
           }
-          files.value.push(object);
         })
         .catch((error) => {
           console.log(error);
